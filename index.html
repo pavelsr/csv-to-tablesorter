@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CSV to jQuery tablesorter</title>
+	<meta name="author" content="Pavel Serikov">
+	<meta content="Display any CSV file as a searchable, filterable, pretty HTML table" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/css/theme.blue.min.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.6/select2.min.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="container-fluid">
+
+		<h2>CSV to jQuery tablesorter</h2>
+		<p>Display any CSV file as a searchable, filterable, pretty HTML table. Done in 100% JavaScript. <a href='https://github.com/derekeder/csv-to-html-table'>Code on GitHub</a>.</p>
+
+		<p>Here's a sample table of participants of SochiSirius</p>
+
+		<div id='table-container'>
+			<table class="table" id="jquery-table">
+				<thead>
+					<tr>
+						<th scope="col">ФИО</th>
+						<th scope="col">регион</th>
+						<th scope="col">смена</th>
+						<th scope="col">даты смены</th>
+						<th scope="col">url смены</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+	<footer class='footer'>
+		<div class='container-fluid'>
+			<hr />
+			<p class='pull-right'><a href='https://github.com/pavelsr/csv-to-html-table'>CSV to jQuery tablesorter</a> by Pavel Serikov</p>
+		</div>
+	</footer>
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.widgets.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.6/select2.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/widgets/widget-filter-formatter-select2.min.js"></script>
+	<script type="text/javascript" src="index.js"></script>
+</body>
+
+</html>

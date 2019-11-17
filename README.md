@@ -7,7 +7,7 @@ This project is alternative to [derekeder/csv-to-html-table](https://github.com/
   * [jquery-csv](https://github.com/evanplaice/jquery-csv/) -> [papaparse](https://github.com/mholt/PapaParse)
   * [datatables](https://datatables.net/) -> [tablesorter](https://mottie.github.io/tablesorter/docs/)
 
-Check out the working demo: http://derekeder.github.io/csv-to-html-table/
+Check out the working demo: https://pavelsr.github.io/csv-to-tablesorter/
 
 In demo `<thead>` is predefined in html code but you can easily read it from csv file or add dynamically with js.
 

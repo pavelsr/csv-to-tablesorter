@@ -15,6 +15,122 @@ You can also rewrite `createTable()` function according your needs - e.g. for pr
 
 By default all dependencies are loaded from `cdnjs.cloudflare.com`
 
+<!--ts-->
+   * [CSV to jQuery tablesorter](#csv-to-jquery-tablesorter)
+   * [HOW TO](#how-to)
+      * [Define thead is javascript](#define-thead-is-javascript)
+      * [Get header from first row](#get-header-from-first-row)
+      * [Create table in case if tableData is array of objects instead of array of arrays](#create-table-in-case-if-tabledata-is-array-of-objects-instead-of-array-of-arrays)
+      * [Allow header word transfer](#allow-header-word-transfer)
+      * [Get file change date](#get-file-change-date)
+      * [Data formatting for filtering](#data-formatting-for-filtering)
+      * [Host as JSON API](#host-as-json-api)
+   * [Possible console errors](#possible-console-errors)
+      * [XML Parsing Error: not well-formed](#xml-parsing-error-not-well-formed)
+      * [TypeError: e is undefined on  jquery.tablesorter.widgets](#typeerror-e-is-undefined-on--jquerytablesorterwidgets)
+
+<!-- Added by: pavel, at: Сб янв 11 13:31:50 MSK 2020 -->
+
+<!--te-->
+
+# HOW TO
+
+## Define `thead` is javascript
+
+You can redefine `createTable()` like that:
+
+```javascript
+
+function createTable(tableData, callback) {
+    var table = $('table#jquery-table');
+    
+    table.empty();
+
+    table.append(
+        $('<thead>').append(
+            $('<tr>').append(
+                $('<th>').text("Col1 header"),
+                $('<th>').text("Col2 header"),
+                $('<th>').text("Col3 header"),
+                ...
+            )
+        )
+    );
+
+    var tbody = $('<tbody>');
+    $.each(tableData, function(x, row) {
+        var tr = $('<tr>');
+        $.each(row, function(y, col) {
+            tr.append( $('<td>').text(col) );
+        });
+        tbody.append(tr);
+    });
+
+    table.append(tbody);
+    
+    callback();
+}
+
+```
+
+or make `thead` more elegant:
+
+```javascript
+var header_columns = ["Header_1", "Header_2", "Header_3"];
+var thead_tr = $('<tr>');
+$.each(header_columns, function(x, hcol) {
+    $('<td>').text(hcol).appendTo(thead_tr);
+});
+table.append( $('<thead>').append(thead_tr) );
+```
+
+## Get header from first row
+
+You can set PapaParse `header` option to true and pass to `createTable()` `results.meta.fields` in addition to `results.data` (or just pass whole `results` object)
+
+```javascript
+var table = $('table#jquery-table');
+var thead_tr = $('<tr>');
+$.each(results.meta.fields, function(x, col_h) {
+    $('<td>').text(col_h).appendTo(thead_tr);
+});
+table.append( $('<thead>').append(thead_tr) );	
+```
+
+## Create table in case if `tableData` is array of objects instead of array of arrays
+
+E.g. if you are reading data from JSON API following code example can be useful
+
+```javascript
+$.each(tableData, function(i, item) {
+    $('<tr>').append(
+        $('<td>').text(item.prop1),
+        $('<td>').text( js_func_1( item.prop1, item.prop2 ) ),
+        $('<td>').append( '<a href="' + item.prop3 + '" target="_blank">'+ js_func_2(item.prop4) + '</a>' ),
+        ...
+    ).appendTo( table.append( $('<tbody>') ) );
+});
+```
+
+## Allow header word transfer
+
+It's done automatically
+
+## Get file change date
+
+You can do it with jquery 
+
+```
+$.get( csv_filename, function( data, textStatus, request ) {
+	$("span#file_date").text( request.getResponseHeader("Last-Modified") );
+	Papa.parse(data, {
+...
+```
+
+## Data formatting for filtering
+
+## Host as JSON API
+
 # Possible console errors
 
 ## XML Parsing Error: not well-formed

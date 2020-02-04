@@ -97,6 +97,32 @@ $.each(results.meta.fields, function(x, col_h) {
 table.append( $('<thead>').append(thead_tr) );	
 ```
 
+## Change columns order other than it's defined in parsed CSV file
+
+After particular
+
+## Hide columns from result table 
+
+You should excluse field from `thead` and `tbody` both:
+
+```javascript
+$.each(results.meta.fields, function(x, col_name) {
+	if ( col_name == "Col_name_to_exclude" ) {
+		return true;
+	}
+    $('<td>').text(col_name).appendTo(thead_tr);
+...
+$.each(results.data, function(x, row) {
+    var tr = $('<tr>');
+    $.each(row, function(col_name, col_value) {
+        if ( col_name == "Col_name_to_exclude" ) { // не отображаем вообще
+			return true;
+		}
+        tr.append( $('<td>').text(col_value) );
+
+```
+
+
 ## Create table in case if `tableData` is array of objects instead of array of arrays
 
 E.g. if you are reading data from JSON API following code example can be useful
@@ -120,16 +146,51 @@ It's done automatically
 
 You can do it with jquery 
 
-```
+```javascript
 $.get( csv_filename, function( data, textStatus, request ) {
 	$("span#file_date").text( request.getResponseHeader("Last-Modified") );
-	Papa.parse(data, {
-...
+	Papa.parse(data, { ...
 ```
+
+## Dynamically add columns
+
+You should add headers at `Papa.parse` `complete` callback, at `results.meta.fields` array.
+Otherwise it will not tied properly
+
+```javascript
+Papa.parse(data, {
+		complete: function(results) {
+			results.meta.fields.push('New column header');
+```
+
+An you should fill dynamic columns values at `createTable()` row iterator
 
 ## Data formatting for filtering
 
-## Host as JSON API
+Most good option is [formatter widget](https://mottie.github.io/tablesorter/docs/example-widget-formatter.html) - it allows
+to save original cell text within the table cell data-attribute to maintain the sort order.
+
+```javascript
+widgetOptions: {
+	formatter_column: {
+        1 : function( text, data ) {
+			console.log( "text in cell: " + text);
+			console.log( "text in 2nd column: " + $(data.$cells[2]).text() );
+			return _func( text, $(data.$cells[2]).text() );
+		}
+    },
+    ...
+```
+
+Papa.parse parse all as string by default ( if you haven't set `dynamicTyping: true` )
+
+You can use this construction for rounding numbers
+
+```javascript
+parseFloat( str.toString().replace(",", ".") ).toFixed(2)
+```
+
+## Host data as JSON API on Github
 
 # Possible console errors
 
@@ -158,3 +219,6 @@ Possible reason is empty field that's needed to be filtered ( e.g. it could be c
 You can remove trailing newline in end of file with `perl -pi -e 'chomp if eof' demo.csv`
 
 For exact debug please inspect array after `Parsing complete` message.
+
+UPD: More elegant solution: set `skipEmptyLines: true` at `Papa.parse()`.
+
